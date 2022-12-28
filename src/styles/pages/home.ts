@@ -1,8 +1,7 @@
-import { styled } from "..";
+import { styled } from '..'
 
 export const HomeContainer = styled('main', {
   display: 'flex',
-  gap: '3rem',
   width: '100%',
   maxWidth: 'calc(100vw - ((100vw - 1180px) / 2))',
   marginLeft: 'auto',
@@ -12,7 +11,6 @@ export const HomeContainer = styled('main', {
 export const HomeProduct = styled('div', {
   background: 'linear-gradient(180deg, #1EA483 0%, #7465D4 100%)',
   borderRadius: 8,
-  padding: '0.25rem',
   cursor: 'pointer',
   position: 'relative',
   overflow: 'hidden',
@@ -51,13 +49,13 @@ export const HomeProduct = styled('div', {
       fontSize: '$lg',
       fontWeight: 'bold',
       color: '$green300',
-    }
+    },
   },
 
   '&:hover': {
     footer: {
       transform: 'translateY(0%)',
       opacity: 1,
-    }
-  }
+    },
+  },
 })
