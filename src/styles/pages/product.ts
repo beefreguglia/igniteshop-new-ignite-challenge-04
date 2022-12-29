@@ -60,6 +60,11 @@ export const ProductDetails = styled('div', {
     fontWeight: 'bold',
     fontSize: '$md',
 
+    '&:disabled': {
+      opacity: 0.6,
+      cursor: 'not-allowed',
+    },
+
     '&:hover': {
       transition: 'background 300ms',
       backgroundColor: '$green300',
@@ -69,11 +74,11 @@ export const ProductDetails = styled('div', {
 
 const SkeletonAnimation = keyframes({
   '0%': {
-    opacity: '0.2',
+    opacity: 0.2,
     transform: 'translateY(6px) scale(0.98)',
   },
   '85%, 100%': {
-    opacity: '1',
+    opacity: 1,
     transform: 'translateY(0px) scale(1)',
   },
 })
