@@ -8,6 +8,7 @@ import { HomeContainer, HomeProduct } from '../styles/pages/home'
 
 import { stripe } from '../lib/stripe'
 import Stripe from 'stripe'
+import Link from 'next/link'
 
 interface Product {
   id: number
@@ -31,18 +32,20 @@ export default function Home({ products }: HomeProps) {
   return (
     <HomeContainer ref={sliderRef} className="keen-slider">
       {products?.map((product) => (
-        <HomeProduct key={product.id} className="keen-slider__slide">
-          <Image
-            src={product.imageUrl}
-            width={520}
-            height={480}
-            alt={product.name}
-          />
-          <footer>
-            <strong>{product.name}</strong>
-            <span>{product.price}</span>
-          </footer>
-        </HomeProduct>
+        <Link key={product.id} href={`/product/${product.id}`}>
+          <HomeProduct className="keen-slider__slide">
+            <Image
+              src={product.imageUrl}
+              width={520}
+              height={480}
+              alt={product.name}
+            />
+            <footer>
+              <strong>{product.name}</strong>
+              <span>{product.price}</span>
+            </footer>
+          </HomeProduct>
+        </Link>
       ))}
     </HomeContainer>
   )
@@ -83,7 +86,10 @@ export const getStaticProps: GetStaticProps = async () => {
       id: product.id,
       name: product.name,
       imageUrl: product.images[0],
-      price: price.unit_amount! / 100,
+      price: new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+      }).format(price.unit_amount! / 100),
     }
   })
 
@@ -91,5 +97,6 @@ export const getStaticProps: GetStaticProps = async () => {
     props: {
       products,
     },
+    revalidate: 60 * 60 * 2, // 2 horas,
   }
 }
