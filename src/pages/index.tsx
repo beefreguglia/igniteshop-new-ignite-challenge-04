@@ -1,4 +1,4 @@
-import { GetServerSideProps } from 'next'
+import { GetStaticProps } from 'next'
 import Image from 'next/image'
 
 import { useKeenSlider } from 'keen-slider/react'
@@ -30,7 +30,7 @@ export default function Home({ products }: HomeProps) {
 
   return (
     <HomeContainer ref={sliderRef} className="keen-slider">
-      {products.map((product) => (
+      {products?.map((product) => (
         <HomeProduct key={product.id} className="keen-slider__slide">
           <Image
             src={product.imageUrl}
@@ -40,7 +40,7 @@ export default function Home({ products }: HomeProps) {
           />
           <footer>
             <strong>{product.name}</strong>
-            <span>R$ {product.price}</span>
+            <span>{product.price}</span>
           </footer>
         </HomeProduct>
       ))}
@@ -48,7 +48,31 @@ export default function Home({ products }: HomeProps) {
   )
 }
 
-export const ServerSideProps: GetServerSideProps = async () => {
+//  getServerSideProps example
+// export const getServerSideProps: GetServerSideProps = async () => {
+//   const response = await stripe.products.list({
+//     expand: ['data.default_price'],
+//   })
+
+//   const products = response.data.map((product) => {
+//     const price = product.default_price as Stripe.Price
+//     return {
+//       id: product.id,
+//       name: product.name,
+//       imageUrl: product.images[0],
+//       price: price.unit_amount! / 100,
+//     }
+//   })
+
+//   return {
+//     props: {
+//       products,
+//     },
+//   }
+// }
+
+// Não funciona em ambiente de desenvolvimento
+export const getStaticProps: GetStaticProps = async () => {
   const response = await stripe.products.list({
     expand: ['data.default_price'],
   })
@@ -59,9 +83,10 @@ export const ServerSideProps: GetServerSideProps = async () => {
       id: product.id,
       name: product.name,
       imageUrl: product.images[0],
-      price: price.unit_amount ? price.unit_amount / 100 : 0,
+      price: price.unit_amount! / 100,
     }
   })
+
   return {
     props: {
       products,
