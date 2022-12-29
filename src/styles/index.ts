@@ -20,6 +20,7 @@ export const {
 
       green500: '#00875F',
       green300: '#00B37E',
+      skeletonColor: '#171923',
     },
 
     fontSizes: {
