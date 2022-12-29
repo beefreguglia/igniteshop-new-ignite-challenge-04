@@ -11,10 +11,10 @@ import Stripe from 'stripe'
 import Link from 'next/link'
 
 interface Product {
-  id: number
+  id: string
   name: string
   imageUrl: string
-  price: number
+  price: string
 }
 
 interface HomeProps {
