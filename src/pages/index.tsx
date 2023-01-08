@@ -10,12 +10,14 @@ import { stripe } from '../lib/stripe'
 import Stripe from 'stripe'
 import Link from 'next/link'
 import Head from 'next/head'
+import { CartButton } from '../components/CartButton'
 
 interface Product {
   id: string
   name: string
   imageUrl: string
   price: string
+  quantity: number
 }
 
 interface HomeProps {
@@ -50,8 +52,13 @@ export default function Home({ products }: HomeProps) {
                 alt={product.name}
               />
               <footer>
-                <strong>{product.name}</strong>
-                <span>{product.price}</span>
+                <div>
+                  <strong>{product.name}</strong>
+                  <span>{product.price}</span>
+                </div>
+                <CartButton variant='green' onClick={(event) => {
+                  event.preventDefault()
+                }} />
               </footer>
             </HomeProduct>
           </Link>

@@ -17,7 +17,7 @@ export const CartStyledButton = styled('button', {
       },
       green: {
         backgroundColor: '$green500',
-
+        
         svg: {
           color: '$white',
         },
