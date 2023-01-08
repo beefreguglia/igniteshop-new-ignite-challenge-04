@@ -11,6 +11,7 @@ import Stripe from 'stripe'
 import Link from 'next/link'
 import Head from 'next/head'
 import { CartButton } from '../components/CartButton'
+import { useCart } from '../hooks/useCart'
 
 interface Product {
   id: string
@@ -25,6 +26,8 @@ interface HomeProps {
 }
 
 export default function Home({ products }: HomeProps) {
+  const { addProductInCart } = useCart()
+  
   const [sliderRef] = useKeenSlider({
     slides: {
       perView: 2.3,
@@ -58,6 +61,13 @@ export default function Home({ products }: HomeProps) {
                 </div>
                 <CartButton variant='green' onClick={(event) => {
                   event.preventDefault()
+                  addProductInCart({
+                    id: product.id,
+                    imageUrl: product.imageUrl,
+                    name: product.name,
+                    price: product.price,
+                    quantity: 1
+                  })
                 }} />
               </footer>
             </HomeProduct>
