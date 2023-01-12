@@ -1,6 +1,6 @@
 import type { AppProps } from 'next/app'
 import { Header } from '../components/Header'
-import { CartContextProvider, useCart } from '../hooks/useCart'
+import { CartContextProvider } from '../hooks/useCart'
 import { globalStyles } from '../styles/global'
 import { Container } from '../styles/pages/app'
 import { ToastContainer } from 'react-toastify'
@@ -28,7 +28,7 @@ export default function App({ Component, pageProps }: AppProps) {
         theme="dark"
         style={{
           marginTop: '2rem',
-          backgroundColor: '#121214'
+          backgroundColor: '#121214',
         }}
       />
     </CartContextProvider>

@@ -1,9 +1,11 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import * as Dialog from '@radix-ui/react-dialog'
 import { CartButton } from './CartButton'
-import logoImg from '../assets/logo.svg'
 import { useCart } from '../hooks/useCart'
+import logoImg from '../assets/logo.svg'
 import { HeaderContainer } from '../styles/components/Header'
+import { CartModal } from './CartModal'
 
 export function Header() {
   const { quantityOfProductsInCart } = useCart()
@@ -14,7 +16,15 @@ export function Header() {
         <Link href="/" prefetch={false}>
           <Image src={logoImg} alt="Logo ignite shop" />
         </Link>
-        <CartButton variant="gray" productsQuantity={quantityOfProductsInCart} />
+        <Dialog.Root>
+          <Dialog.Trigger asChild>
+            <CartButton
+              variant="gray"
+              productsQuantity={quantityOfProductsInCart}
+            />
+          </Dialog.Trigger>
+          <CartModal />
+        </Dialog.Root>
       </HeaderContainer>
     </>
   )

@@ -1,9 +1,8 @@
-import axios from 'axios'
+// import axios from 'axios'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
 import Stripe from 'stripe'
 import { useCart } from '../../hooks/useCart'
 
@@ -23,7 +22,7 @@ interface ProductProps {
   id: string
   name: string
   imageUrl: string
-  price: string
+  price: number
   description: string
   defaultPriceId: string
 }
@@ -33,11 +32,11 @@ export default function Product({
   imageUrl,
   name,
   price,
-  defaultPriceId,
-  id
+  // defaultPriceId,
+  id,
 }: ProductProps) {
-  const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] =
-    useState(false)
+  // const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] =
+  //   useState(false)
   const { isFallback } = useRouter()
   const { addProductInCart } = useCart()
   async function handleAddProductInCart() {
@@ -93,8 +92,9 @@ export default function Product({
           <span>{price}</span>
           <p>{description}</p>
           <button
-            disabled={isCreatingCheckoutSession}
+            // disabled={isCreatingCheckoutSession}
             onClick={handleAddProductInCart}
+            className="removeButton"
           >
             Colocar na sacola
           </button>

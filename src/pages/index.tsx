@@ -17,7 +17,7 @@ interface Product {
   id: string
   name: string
   imageUrl: string
-  price: string
+  price: number
   quantity: number
 }
 
@@ -27,7 +27,7 @@ interface HomeProps {
 
 export default function Home({ products }: HomeProps) {
   const { addProductInCart } = useCart()
-  
+
   const [sliderRef] = useKeenSlider({
     slides: {
       perView: 2.3,
@@ -41,38 +41,48 @@ export default function Home({ products }: HomeProps) {
         <title>Home | Ignite Shop</title>
       </Head>
       <HomeContainer ref={sliderRef} className="keen-slider">
-        {products?.map((product) => (
-          <Link
-            key={product.id}
-            href={`/product/${product.id}`}
-            prefetch={false}
-          >
-            <HomeProduct className="keen-slider__slide">
-              <Image
-                src={product.imageUrl}
-                width={520}
-                height={480}
-                alt={product.name}
-              />
-              <footer>
-                <div>
-                  <strong>{product.name}</strong>
-                  <span>{product.price}</span>
-                </div>
-                <CartButton variant='green' onClick={(event) => {
-                  event.preventDefault()
-                  addProductInCart({
-                    id: product.id,
-                    imageUrl: product.imageUrl,
-                    name: product.name,
-                    price: product.price,
-                    quantity: 1
-                  })
-                }} />
-              </footer>
-            </HomeProduct>
-          </Link>
-        ))}
+        {products?.map((product) => {
+          const formattedPrice = new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+          }).format(product.price / 100)
+
+          return (
+            <Link
+              key={product.id}
+              href={`/product/${product.id}`}
+              prefetch={false}
+            >
+              <HomeProduct className="keen-slider__slide">
+                <Image
+                  src={product.imageUrl}
+                  width={520}
+                  height={480}
+                  alt={product.name}
+                />
+                <footer>
+                  <div>
+                    <strong>{product.name}</strong>
+                    <span>{formattedPrice}</span>
+                  </div>
+                  <CartButton
+                    variant="green"
+                    onClick={(event) => {
+                      event.preventDefault()
+                      addProductInCart({
+                        id: product.id,
+                        imageUrl: product.imageUrl,
+                        name: product.name,
+                        price: product.price,
+                        quantity: 1,
+                      })
+                    }}
+                  />
+                </footer>
+              </HomeProduct>
+            </Link>
+          )
+        })}
       </HomeContainer>
     </>
   )
@@ -113,10 +123,7 @@ export const getStaticProps: GetStaticProps = async () => {
       id: product.id,
       name: product.name,
       imageUrl: product.images[0],
-      price: new Intl.NumberFormat('pt-BR', {
-        style: 'currency',
-        currency: 'BRL',
-      }).format(price.unit_amount! / 100),
+      price: price.unit_amount,
     }
   })
 

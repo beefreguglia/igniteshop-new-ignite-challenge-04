@@ -15,10 +15,10 @@ interface CartButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   productsQuantity?: number
 }
 
-export function CartButton({ 
-  variant, 
-  size = 'sm', 
-  productsQuantity = 0, 
+export function CartButton({
+  variant,
+  size = 'sm',
+  productsQuantity = 0,
   ...rest
 }: CartButtonProps) {
   const haveProductsInCart = productsQuantity > 0
@@ -30,12 +30,12 @@ export function CartButton({
         ) : (
           <Handbag size={32} weight="bold" />
         )}
-        { haveProductsInCart && (
+        {haveProductsInCart && (
           <>
-            { productsQuantity < 10 ? (
-              <CartQuantity variant='small'>{productsQuantity}</CartQuantity>
+            {productsQuantity < 10 ? (
+              <CartQuantity variant="small">{productsQuantity}</CartQuantity>
             ) : (
-              <CartQuantity variant='large'>{productsQuantity}</CartQuantity>
+              <CartQuantity variant="large">{productsQuantity}</CartQuantity>
             )}
           </>
         )}
