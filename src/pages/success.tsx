@@ -86,7 +86,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       id: price.id,
     }
   })
-  console.log(products)
+
   return {
     props: {
       customerName,

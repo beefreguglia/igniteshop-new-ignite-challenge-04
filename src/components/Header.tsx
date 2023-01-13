@@ -9,7 +9,7 @@ import { CartModal } from './CartModal'
 
 export function Header() {
   const { quantityOfProductsInCart } = useCart()
-  console.log(quantityOfProductsInCart)
+
   return (
     <>
       <HeaderContainer>
