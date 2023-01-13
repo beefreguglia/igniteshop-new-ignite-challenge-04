@@ -22,7 +22,8 @@ interface ProductProps {
   id: string
   name: string
   imageUrl: string
-  price: number
+  priceInCents: number
+  formattedPrice: string
   description: string
   defaultPriceId: string
 }
@@ -31,8 +32,9 @@ export default function Product({
   description,
   imageUrl,
   name,
-  price,
-  // defaultPriceId,
+  priceInCents,
+  formattedPrice,
+  defaultPriceId,
   id,
 }: ProductProps) {
   // const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] =
@@ -44,21 +46,10 @@ export default function Product({
       id,
       imageUrl,
       name,
-      price,
+      price: priceInCents,
       quantity: 1,
+      priceId: defaultPriceId,
     })
-    // try {
-    //   setIsCreatingCheckoutSession(true)
-    //   const response = await axios.post('/api/checkout', {
-    //     priceId: defaultPriceId,
-    //   })
-
-    //   const { checkoutUrl } = response.data
-    //   window.location.href = checkoutUrl
-    // } catch (err) {
-    //   setIsCreatingCheckoutSession(false)
-    //   alert('Falha ao redirecionar ao checkout')
-    // }
   }
 
   if (isFallback) {
@@ -89,7 +80,7 @@ export default function Product({
         </ImageProductContainer>
         <ProductDetails>
           <h1>{name}</h1>
-          <span>{price}</span>
+          <span>{formattedPrice}</span>
           <p>{description}</p>
           <button
             // disabled={isCreatingCheckoutSession}
@@ -128,10 +119,11 @@ export const getStaticProps: GetStaticProps<any, { id: string }> = async ({
       id: product.id,
       name: product.name,
       imageUrl: product.images[0],
-      price: new Intl.NumberFormat('pt-BR', {
+      formattedPrice: new Intl.NumberFormat('pt-BR', {
         style: 'currency',
         currency: 'BRL',
       }).format(price.unit_amount! / 100),
+      priceInCents: price.unit_amount,
       description: product.description,
       defaultPriceId: price.id,
     },

@@ -1,17 +1,19 @@
 import { createContext, ReactNode, useContext, useState } from 'react'
 import { toast } from 'react-toastify'
 
-interface Product {
+export interface Product {
   id: string
   name: string
   imageUrl: string
   price: number
   quantity: number
+  priceId: string
 }
 
 interface CartContextInterface {
   cartProducts: Product[]
   quantityOfProductsInCart: number
+  totalPrice: number
   addProductInCart: (product: Product) => void
   changeProductQuantity: (productId: string, quantity: number) => void
   deleteProductInCart: (productId: string) => void
@@ -28,6 +30,11 @@ export function CartContextProvider({ children }: ProductContextProviderProps) {
   const quantityOfProductsInCart = cartProducts.reduce(
     (prevCartQuantity, currentCartProduct) =>
       prevCartQuantity + currentCartProduct.quantity,
+    0,
+  )
+  const totalPrice = cartProducts.reduce(
+    (prevCartQuantity, currentCartProduct) =>
+      prevCartQuantity + currentCartProduct.price * currentCartProduct.quantity,
     0,
   )
 
@@ -102,6 +109,7 @@ export function CartContextProvider({ children }: ProductContextProviderProps) {
     <CartContext.Provider
       value={{
         cartProducts,
+        totalPrice,
         quantityOfProductsInCart,
         addProductInCart,
         changeProductQuantity,

@@ -50,11 +50,74 @@ export const CardModalContainer = styled('div', {
   display: 'flex',
   flexDirection: 'column',
   gap: '1.5rem',
+  maxHeight: '52vh',
+  overflow: 'auto',
+
+  '&::-webkit-scrollbar': {
+    width: '10px',
+  },
+  '&::-webkit-scrollbar-track': {
+    background: '$gray900',
+    borderRadius: '8px',
+  },
+  '&::-webkit-scrollbar-thumb': {
+    backgroundColor: '$green500',
+    borderRadius: '20px',
+  },
+
+  footer: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    minWidth: 'calc(30rem - 3rem)',
+    position: 'absolute',
+    bottom: 100,
+
+    div: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      gap: '0.5rem',
+
+      span: {
+        fontWeight: 'bold',
+      },
+
+      '.price': {
+        fontSize: '$xl',
+      },
+    },
+
+    button: {
+      marginTop: '3.75rem',
+      padding: '1.25rem 2rem',
+      border: 'none',
+      borderRadius: '8px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      color: '$white',
+      backgroundColor: '$green500',
+      fontSize: '$md',
+      fontWeight: 'bold',
+      cursor: 'pointer',
+
+      '&:hover': {
+        backgroundColor: '$green300',
+        transition: 'background 400ms',
+      },
+      '&:disabled': {
+        cursor: 'not-allowed',
+        opacity: 0.8,
+      },
+    },
+  },
 })
 
 export const CardModalContent = styled('div', {
   display: 'flex',
   gap: '1.25rem',
+  width: 'calc(30rem - 4rem)',
 })
 
 export const CardImageContainer = styled('div', {

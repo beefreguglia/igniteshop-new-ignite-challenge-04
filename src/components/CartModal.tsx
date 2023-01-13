@@ -1,8 +1,10 @@
 import * as Dialog from '@radix-ui/react-dialog'
+import axios from 'axios'
 import Image from 'next/image'
 import { X } from 'phosphor-react'
-import { ChangeEvent } from 'react'
-import { useCart } from '../hooks/useCart'
+import { ChangeEvent, useState } from 'react'
+import { toast } from 'react-toastify'
+import { Product, useCart } from '../hooks/useCart'
 import {
   CardImageContainer,
   CardModalContainer,
@@ -17,8 +19,19 @@ import {
 import NumberInput from './NumberInput'
 
 export function CartModal() {
-  const { cartProducts, changeProductQuantity, deleteProductInCart } = useCart()
-
+  const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] =
+    useState(false)
+  const {
+    cartProducts,
+    changeProductQuantity,
+    deleteProductInCart,
+    totalPrice,
+    quantityOfProductsInCart,
+  } = useCart()
+  const formattedTotalPrice = new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+  }).format(totalPrice / 100)
   function handleChangeProductQuantity(
     event: ChangeEvent<HTMLInputElement>,
     id: string,
@@ -38,6 +51,24 @@ export function CartModal() {
     deleteProductInCart(productId)
   }
 
+  async function handleCartPurchase(cart: Product[]) {
+    event?.preventDefault()
+    setIsCreatingCheckoutSession(true)
+    const formattedCheckoutData = cart.map((cartProduct) => ({
+      price: cartProduct.priceId,
+      quantity: cartProduct.quantity,
+    }))
+    try {
+      setIsCreatingCheckoutSession(true)
+      const response = await axios.post('/api/checkout', formattedCheckoutData)
+      const { checkoutUrl } = response.data
+      window.location.href = checkoutUrl
+    } catch (e) {
+      setIsCreatingCheckoutSession(false)
+      toast.error('Falha ao redirecionar ao checkout')
+    }
+  }
+
   return (
     <Dialog.Portal>
       <CartModalOverlay />
@@ -45,7 +76,7 @@ export function CartModal() {
         <Close>
           <X size={24} weight="bold" />
         </Close>
-        <form>
+        <form onSubmit={() => handleCartPurchase(cartProducts)}>
           <Title>Sacola de compras</Title>
           <CardModalContainer>
             {cartProducts.length > 0 &&
@@ -95,6 +126,23 @@ export function CartModal() {
                   </CardModalContent>
                 )
               })}
+            <footer>
+              <div>
+                <p>Quantidade</p>
+                <p>{quantityOfProductsInCart} itens</p>
+              </div>
+              <div>
+                <p>
+                  <span>Valor total</span>
+                </p>
+                <p>
+                  <span className="price">{formattedTotalPrice}</span>
+                </p>
+              </div>
+              <button disabled={isCreatingCheckoutSession} type="submit">
+                Finalizar compra
+              </button>
+            </footer>
           </CardModalContainer>
         </form>
       </CartModalContent>
